@@ -1,18 +1,24 @@
 //Play a game of AdaShip against the computer!
+
+//importing libraries
 #include <iostream>
 #include <algorithm>
 #include <time.h>
 #include <fstream>
 #include <string>
 #include <stdlib.h>
-#include "INIReader.h"
 
 using namespace std;
+
+//importing files
+
+#include "Colours.h"
+#include "INIReader.h"
 
 //Function prototypes
 int displayGreeting();
 
-class ship //The ship class is not used extensively in actual gameplay - when the grid object is passed a ship object, it places the ships coordinates into the grid
+class AdaShip //The ship class is not used extensively in actual gameplay - when the grid object is passed a ship object, it places the ships coordinates into the grid
 {
   private:
     //This pair make up the coordinates for one end of the ship
@@ -26,7 +32,7 @@ class ship //The ship class is not used extensively in actual gameplay - when th
   string name; //Type (destroyer, submarine, etc.)
 
   public:
-    void inputShip(int s, string n); //Allows the player to input their coordinates for the ship
+    void inputAdaShip(int s, string n); //Allows the player to input their coordinates for the ship
   //Getter functions
   char getx1() {
     return x1;
@@ -42,14 +48,14 @@ class ship //The ship class is not used extensively in actual gameplay - when th
   };
 };
 
-//Lets the player place their own ships
-void ship::inputShip(int s, string n) //When inputing, this function is passed the length of the ship and its name
+//Lets the player place their own AdaShips
+void AdaShip::inputAdaShip(int s, string n) //When inputing, this function is passed the length of the ship and its name
 {
   cout << "Entering coordinates for: " << n << " (" << s << " units)" << endl;
   name = n;
   size = s;
 
-  cout << "Enter the coordinates where you would like to place one end of this ship." << endl;
+  cout << "Enter the coordinates where you would like to place one end of this AdaShip." << endl;
   cout << "The format is [Letter][Number] of your desired move, e.g. \"F2\"." << endl;
   
   cin >> x1; //x1 is a char, y1 is an int
@@ -62,7 +68,7 @@ void ship::inputShip(int s, string n) //When inputing, this function is passed t
   {
     cin.clear();
     cin.ignore(256, '\n');
-    cout << "Error: please enter a valid coordinate" << endl;
+    cout << BOLD(FRED("Error: please enter a valid coordinate")) << endl;
     cin >> x1 >> y1;
     x1 = toupper(x1);
   }
@@ -72,7 +78,7 @@ void ship::inputShip(int s, string n) //When inputing, this function is passed t
   cin.clear();
   cin.ignore(256, '\n');
 
-  cout << "Now, would you like to orient the other end of the ship up, down, left, or right?" << endl;
+  cout << "Now, would you like to orient the other end of the AdaShip up, down, left, or right?" << endl;
   string input;
   bool validated = false;
 
@@ -84,18 +90,18 @@ void ship::inputShip(int s, string n) //When inputing, this function is passed t
     {
       cin.clear();
       cin.ignore(256, '\n');
-      cout << "Error: please enter up, down, left, or right:" << endl;
+      cout << BOLD(FRED("Error: please enter up, down, left, or right:")) << endl;
       getline(cin, input);
       for (int i = 0; input[i]; i++) input[i] = tolower(input[i]);
     }
 
-    //Length variable is used for checking that the ship fits in the direction it was placed
+    //Length variable is used for checking that the AdaShip fits in the direction it was placed
     int length = size - 1;
 
-    //The following if statements check to make sure the ship fits on the grid when oriented in the selected direction
+    //The following if statements check to make sure the AdaShip fits on the grid when oriented in the selected direction
     if (input == "left") {
       if ((x1 - length) < 'A') {
-        cout << "There is no room that direction, please enter a different one" << endl;
+        cout << BOLD(FRED("Error: There is no room that direction, please enter a different one" )) << endl;
       } else {
         x2 = x1 - length;
         y2 = y1;
@@ -105,7 +111,7 @@ void ship::inputShip(int s, string n) //When inputing, this function is passed t
 
     if (input == "right") {
       if ((x1 + length) > 'J') {
-        cout << "There is no room that direction, please enter a different one" << endl;
+        cout << BOLD(FRED("Error: There is no room that direction, please enter a different one" )) << endl;
       } else {
         x2 = x1 + length;
         y2 = y1;
@@ -115,7 +121,7 @@ void ship::inputShip(int s, string n) //When inputing, this function is passed t
 
     if (input == "up") {
       if ((y1 - length) < 1) {
-        cout << "There is no room that direction, please enter a different one" << endl;
+        cout << BOLD(FRED("Error: There is no room that direction, please enter a different one" )) << endl;
       } else {
         y2 = y1 - length;
         x2 = x1;
@@ -125,7 +131,7 @@ void ship::inputShip(int s, string n) //When inputing, this function is passed t
 
     if (input == "down") {
       if ((y1 + length) > 10) {
-        cout << "There is no room that direction, please enter a different one" << endl;
+        cout << BOLD(FRED("Error: There is no room that direction, please enter a different one" )) << endl;
       } else {
         y2 = y1 + length;
         x2 = x1;
@@ -143,7 +149,7 @@ void ship::inputShip(int s, string n) //When inputing, this function is passed t
 }
 //END OF SHIP CLASS DECLARATION
 
-class shipGrid //The game board grid - 4 are created: 2 per player
+class AdaShipGrid //The game board grid - 3 are created when the game runs: one to hold player AdaShips, one for AI AdaShips, and one for the player to fill in as the game progresses
 {
   private:
     char grid[10][10]; //2D-Array containing all the game board data
@@ -157,20 +163,20 @@ class shipGrid //The game board grid - 4 are created: 2 per player
   char intToChar(int i);
 
   public:
-    shipGrid(); //Constructor, fills grid array with empty spaces
+    AdaShipGrid(); //Constructor, fills grid array with empty spaces
   void clearGrid(); //Erases grid
   void displayKey(); //Displays info for the player
   void displayGrid(); //Displays grid object
   void generateGrid(); //Generates random Computer Grid
   void editGrid(int index1, int index2, char symbol); //Edits single char in grid array
-  bool detectCross(ship s); //Detects whether passed ship conflicts with ships alredy placed
+  bool detectCross(AdaShip s); //Detects whether passed AdaShip conflicts with ships already placed
   bool detectWin(); //Scans the board to look for any remaining ship characters - if none exist, returns true
-  void placeShip(ship s); //Places passed ship into the game board
-  shipGrid playerShot(shipGrid blankGrid); //Lets player shoot at Computer board - blankGrid is passed to update with result of player's shot
+  void placeAdaShip(AdaShip s); //Places passed AdaShip into the game board
+  AdaShipGrid playerShot(AdaShipGrid blankGrid); //Lets player shoot at AI board - blankGrid is passed to update with result of player's shot
   void aiShot(); //Lets the Computer shoot at the player's grid
 };
 
-shipGrid::shipGrid() //Constructor, fills grid array with empty spaces
+AdaShipGrid::AdaShipGrid() //Constructor, fills grid array with empty spaces
 {
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
@@ -179,7 +185,7 @@ shipGrid::shipGrid() //Constructor, fills grid array with empty spaces
   }
 }
 
-void shipGrid::clearGrid() //Resets all grid data to default
+void AdaShipGrid::clearGrid() //Resets all grid data to default
 {
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
@@ -188,13 +194,13 @@ void shipGrid::clearGrid() //Resets all grid data to default
   }
 }
 
-void shipGrid::displayKey() //Simple display function to help the player
+void AdaShipGrid::displayKey() //Simple display function to help the player
 {
   cout << "***SYMBOL KEY***" << endl <<
     "#: Your AdaShips    M: Misses    H: Hits" << endl;
 }
 
-void shipGrid::displayGrid() //Displays all data in the grid
+void AdaShipGrid::displayGrid() //Displays all data in the grid
 {
   cout << "   A   B   C   D   E   F   G   H   I   J" << endl <<
     "1 [" << grid[0][0] << "] [" << grid[0][1] << "] [" << grid[0][2] << "] [" << grid[0][3] << "] [" << grid[0][4] << "] [" << grid[0][5] << "] [" << grid[0][6] << "] [" << grid[0][7] << "] [" << grid[0][8] << "] [" << grid[0][9] << "]" << endl <<
@@ -209,7 +215,7 @@ void shipGrid::displayGrid() //Displays all data in the grid
     "10[" << grid[9][0] << "] [" << grid[9][1] << "] [" << grid[9][2] << "] [" << grid[9][3] << "] [" << grid[9][4] << "] [" << grid[9][5] << "] [" << grid[9][6] << "] [" << grid[9][7] << "] [" << grid[9][8] << "] [" << grid[9][9] << "]" << endl;
 }
 
-int shipGrid::charToInt(char c) //Used for converting player input
+int AdaShipGrid::charToInt(char c) //Used for converting player input
 {
   switch (c) {
   case 'A':
@@ -237,7 +243,7 @@ int shipGrid::charToInt(char c) //Used for converting player input
   return 0;
 }
 
-char shipGrid::intToChar(int i) //Used for converting array subscript to char for displaying
+char AdaShipGrid::intToChar(int i) //Used for converting array subscript to char for displaying
 {
   switch (i) {
   case 1:
@@ -265,7 +271,7 @@ char shipGrid::intToChar(int i) //Used for converting array subscript to char fo
   return 0;
 }
 
-void shipGrid::editGrid(int index1, int index2, char symbol) //Edit a single element in the grid
+void AdaShipGrid::editGrid(int index1, int index2, char symbol) //Edit a single element in the grid
 {
   //Pass the actual point you want to edit - this adjust automatically for off-by-one
   if (index2 == 0) //If this function is passed a 0, it aborts the edit
@@ -275,12 +281,12 @@ void shipGrid::editGrid(int index1, int index2, char symbol) //Edit a single ele
   grid[index1][index2] = symbol;
 }
 
-void shipGrid::generateGrid() //Generates a random preset Computer grid
+void AdaShipGrid::generateGrid() //Generates a random preset Computer grid
 {
   //Get random number between 1 and 3
   int map = rand() % 5 + 1;
 
-  //Places ships based on random int
+  //Places AdaShips based on random int
   switch (map) {
   case 1:
     grid[1][0] = '#';
@@ -385,7 +391,7 @@ void shipGrid::generateGrid() //Generates a random preset Computer grid
   }
 }
 
-bool shipGrid::detectWin() //Scan the grid for a surviving ship character (#). If it contains none, return true
+bool AdaShipGrid::detectWin() //Scan the grid for a surviving ship character (#). If it contains none, return true
 {
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
@@ -397,11 +403,11 @@ bool shipGrid::detectWin() //Scan the grid for a surviving ship character (#). I
   return true;
 }
 
-bool shipGrid::detectCross(ship s) //Detect whether passed ship object would cross any ships already placed
+bool AdaShipGrid::detectCross(AdaShip s) //Detect whether passed ship object would cross any ships already placed
 {
   bool overlap = false;
 
-  //Get the ship's coordinates
+  //Get the AdaShip's coordinates
   int x1 = charToInt(s.getx1());
   int y1 = s.gety1();
   int x2 = charToInt(s.getx2());
@@ -412,7 +418,7 @@ bool shipGrid::detectCross(ship s) //Detect whether passed ship object would cro
   x2--;
   y2--;
 
-  if (x1 == x2) //If ship is horizontal
+  if (x1 == x2) //If AdaShip is horizontal
   {
     do {
       if (grid[x1][y1] == '#') {
@@ -424,7 +430,7 @@ bool shipGrid::detectCross(ship s) //Detect whether passed ship object would cro
     } while (y1 <= y2 && overlap != true);
   }
 
-  if (y1 == y2) //If ship is vertical
+  if (y1 == y2) //If AdaShip is vertical
   {
     do {
       if (grid[x1][y1] == '#') {
@@ -438,7 +444,7 @@ bool shipGrid::detectCross(ship s) //Detect whether passed ship object would cro
   return overlap;
 }
 
-void shipGrid::placeShip(ship s) //Place passed ship object into grid
+void AdaShipGrid::placeAdaShip(AdaShip s) //Place passed ship object into grid
 {
   int x1 = charToInt(s.getx1());
   int y1 = s.gety1();
@@ -459,7 +465,108 @@ void shipGrid::placeShip(ship s) //Place passed ship object into grid
     } while (x1 <= x2);
   }
 
-  cout << endl << "Ship placed sucessfully!" << endl;
+  cout << endl << "AdaShip placed sucessfully!" << endl;
+}
+
+void AdaShipGrid::aiShot() //Computer takes a shot at player grid
+{
+  int x;
+  int y;
+  bool newShot = true; //Bool to determine wheter the Computer chose a new spot to - at
+  string status; //Holds whether Computer hit or missed
+
+  do {
+    rand();
+    rand();
+    rand(); //Generate a random coordinate on the grid 
+    x = rand() % 10;
+    rand();
+    rand();
+    rand();
+    y = rand() % 10;
+
+    //Prevent the Computer from firing at a square they've already shot at
+    if (grid[x][y] == 'X' || grid[x][y] == 'H') {
+      newShot = false;
+    } else if (grid[x][y] == ' ') //If it's an empty spot, Computer missed
+    {
+      grid[x][y] = 'M';
+      status = BOLD(FRED("The Computer has missed their fired torpedo at your AdaShip Fleet"));
+      newShot = true;
+    } else if (grid[x][y] == '#') //if there was a AdaShip there, Computer hit
+    {
+      grid[x][y] = 'H';
+      status = BOLD(FGRN("The Computer has successfully fired a torpedo that has struck your AdaShip Fleet"));
+      newShot = true;
+    }
+
+  } while (newShot == false); //Repeat until Computer hits a spot it hasn't tried
+
+  char xTemp = intToChar(x + 1); //Convert coordinate to char so it can be displayed
+  cout << "Computer fired at " << xTemp << y + 1 << ". " << endl << status << endl;
+
+  string xStr(1, xTemp);
+}
+
+AdaShipGrid AdaShipGrid::playerShot(AdaShipGrid blankGrid) //Lets player take shot at Computer grid
+{
+  char xTemp;
+  int x;
+  int y;
+
+  bool newShot = false;
+
+  cout << "Enter where you want the torpedo to fire (e.g. F7): " << endl;
+
+  while (newShot == false) {
+    cin >> xTemp;
+    cin >> y;
+    xTemp = toupper(xTemp);
+
+    while (cin.fail() || y > 10 || y < 1 || xTemp < 'A' || xTemp > 'J') //Validate the user's input
+    {
+      cin.clear();
+      cin.ignore(256, '\n');
+      cout << BOLD(FRED("Error: please enter a valid coordinate"))<< endl;
+      cin >> xTemp >> y;
+      xTemp = toupper(xTemp);
+    }
+
+    cout << endl << "You have fired at " << xTemp << y << endl;
+
+    cin.clear();
+    cin.ignore(256, '\n');
+
+    //Reduce the y by one to account for the grid array starting at 0, not 1
+    y--;
+
+    x = charToInt(xTemp);
+    x--;
+
+    //If the player shoots at a space they already shot at, ask them to choose a different one
+    if (grid[x][y] == 'H' || grid[x][y] == 'H' || grid[x][y] == 'M') {
+      cout << BOLD(FRED( "Error: You've already shot there! Please enter a different coordinate")) << endl;
+      newShot = false;
+    } else if (grid[x][y] == '#') //If hit an enemy AdaShip, display hit, change Computer grid and blankGrid to reflect changes
+    {
+      cout << BOLD(FGRN("Your fired torpedo has successfully hit an enemy AdaShip")) << endl;
+      blankGrid.editGrid(y + 1, x + 1, 'H');
+      grid[x][y] = 'H';
+
+      string xStr(1, xTemp);
+      newShot = true;
+    } else if (grid[x][y] == ' ') //Same as above, except for a miss
+    {
+      cout << BOLD(FRED("Your fired torpedo has failed to hit an enemy AdaShip")) << endl;
+      grid[x][y] = 'M';
+      blankGrid.editGrid(y + 1, x + 1, 'M');
+
+      string xStr(1, xTemp);
+      newShot = true;
+    }
+  }
+
+  return blankGrid; //Return the updated blankGrid
 }
 
 //Program greeting and menu
