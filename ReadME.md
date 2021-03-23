@@ -111,17 +111,38 @@ AdaShipGrid attributes and methods are frequently used within the main file in o
 The Colours header file is absent from the diagram as it does not contain a class however it is imported and used within some of the cpp files to improve the user interface.
 
 
-![Untitled Diagram-Page-1]
-(https://user-images.githubusercontent.com/56550489/112168012-d9579000-8be8-11eb-87cf-544b72c54dda.png)
+![Untitled Diagram-Page-1](https://user-images.githubusercontent.com/56550489/112168012-d9579000-8be8-11eb-87cf-544b72c54dda.png)
 
 ---
 
 ### 1c. Initial working plan, overall approach, development strategy and approach to quality (linked to 1a, 1b).
 
+Initial Working Plan
+
+I adopted an interative approach when undertaking this project, as I aimed to firstly build the basic components of the program. When I had the fundamentals in order, this enabled me to build on them and meet the PASS requirements expressed in the project brief. 
+
+Approach to Quality
+
+A technique I utilised religiously was to pick a single epic to write code for, firstly as a function in a seperate repository with a mock-up version of my program. This was so that I could stress test the new code and refactor my work, testing it frequently for bugs and defects. I would then implement this part of my code with the rest of my code base and see if I had met this requirement.
+
+
+Development Strategy 
+
+My development strategy consisted of an object-orientated approach this would mean seperating the logic into a class to contain data associated to its intended mechanism and functionality. I kept the code in seperate files to ensure good coding standards and readability for example AdaShipGrid.h and AdaShip.h. 
+
+To ensure that I fully understood the project and its planned user journey I designed the following Player V Computer Flow Diagram. This allowed me to visualise how I could decompose the program into various sub-parts and understand how a single user decision would affect their journey. I found this useful as there are various conditions and loops within my program for validation purposes and because the player is free to dictate how they want to continue with the program (e.g. quit program). 
+
+
 ![Untitled Diagram-Page-2](https://user-images.githubusercontent.com/56550489/112168095-ea080600-8be8-11eb-9347-7f23f635a60a.png)
 -
 ### 1d. Analysis and decomposition of the overall problem into key ‘epic’ style tasks (linked to 1b, 1c).
+
+After reading the project requirements, I noticed that the requirements were already split up into various 'epic' style tasks, an example being: "Select from a game menu to a start a: One player v computer game, Quit". After creating and posting all of my 'epic' style tasks to GitHub I gradually progressed until I created a functional prototype that met most of the requirements expressed in the project brief.
+
+![epics](https://user-images.githubusercontent.com/56550489/112197575-2563fe00-8c04-11eb-8897-26f304b61ec3.png)
+
+
+When analysing a epic from that has been decomposed from the initial requirements in my project board I would aim to utilise my analytical skills by applying a systematic technique for epic analysis. I listed the following headings in my notebook: TASK | Data Types | Algorithms | Functions | Code. Under the headings I would aim to fill out each column displayed for the epic I was working on to enable me to structure the program before writing any code.
+
 ---
 ### 1e. Initial object-oriented design ideas and plan of phased breakdown into smaller tasks (linked to 1d).
-
-
