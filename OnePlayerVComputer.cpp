@@ -135,28 +135,21 @@ bool onePlayerVComputer() {
   string gameFlowUserDecision;
   string happyOrQuit;
 
-  cout << "\nPress \"H\" if you are you happy with all of your AdaShip Positions or press \"Q\" to quit the program";
+  cout << "\nPress \"Q\" to quit the program or any other key if you are happy with your ship placements";
   cin >> happyOrQuit;
-  if (happyOrQuit == "H" || happyOrQuit == "h") {
-    playerGrid.displayKey();
-    firstTurn = false;
-  } else if (happyOrQuit == "q" || happyOrQuit == "Q") {
+  if (happyOrQuit == "q" || happyOrQuit == "Q") {
     return 1;
+    firstTurn = false;
   }
+  
 
   while (!playerWin && !aiWin) {
     //Improves game flow
     if (firstTurn) {
-      cout << "\nPress \"E\" to end the computer's turn to continue or press \"Q\" to quit the program or press \"C\" to reset your grid" << endl;
-      cin >> gameFlowUserDecision;
-      if (gameFlowUserDecision == "e" || gameFlowUserDecision == "E") {
-        playerGrid.displayKey();
-      } else if (gameFlowUserDecision == "c" || gameFlowUserDecision == "C") {
-        onePlayerVComputer();
-        return 0;
-      } else if (gameFlowUserDecision == "q" || gameFlowUserDecision == "Q") {
-        return 1;
-      }
+      cout << "\nPlease press any key and enter to end the computer's turn and continue" << endl;
+      cin.get();
+      cout << endl;
+      playerGrid.displayKey();
     }
 
     firstTurn = true;
@@ -165,8 +158,18 @@ bool onePlayerVComputer() {
     cout << BOLD(FRED("\n           Player Target Board\n")) << endl;
     blankGrid.displayGrid();
     cout << "\nTurn " << turns << endl;
-
     cout << "***YOUR TURN***" << endl;
+
+    if (firstTurn) {
+      cout << "\nPress \"Q\" to quit the program and press \"C\" to reset your grid or any other key to continue" << endl;
+      cin >> gameFlowUserDecision;
+      if (gameFlowUserDecision == "c" || gameFlowUserDecision == "C") {
+        onePlayerVComputer();
+      } else if (gameFlowUserDecision == "q" || gameFlowUserDecision == "Q") {
+        return 1;
+      }
+    }
+
     blankGrid = aiGrid.playerShot(blankGrid); //Let the player shoot
     playerWin = aiGrid.detectWin(); //Check to see if they won
 

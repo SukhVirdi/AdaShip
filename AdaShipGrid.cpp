@@ -345,7 +345,7 @@ AdaShipGrid AdaShipGrid::playerShot(AdaShipGrid blankGrid) //Lets player take sh
   bool newShot = false;
 
   cout << "Enter where you want the torpedo to fire (e.g. F7): " << endl;
-
+  
   while (newShot == false) {
     cin >> xTemp;
     cin >> y;

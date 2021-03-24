@@ -1,7 +1,7 @@
 # AdaShip
 by Sukh Virdi
  
-Locate to my AdaShip src code on the Repl.it compiler using this [link](https://repl.it/@SukhVirdi7/AdaShip) 
+Locate to my AdaShip src code on the Repl.it compiler using this [link](https://replit.com/join/rkvhunvh-sukhvirdi7) 
 
 ## Table of Contents
 - [Challenge Outline](#1-challenge-outline)
@@ -16,8 +16,6 @@ Locate to my AdaShip src code on the Repl.it compiler using this [link](https://
 ## 1. Challenge Outline
  
 ### 1a. Summary and review of the problem, overall proposed solution.
-
-Summary and review of the problem
  
 AdaShip is a command-line game, which is essentially a clone of the traditional board game "battleship". Players take turns trying to destroy each other's battleships placed along a grid. This means that the boards created will have to hold data relating to placed boats, fired shots and missed shots. The player (you) also needs to be able to fire torpedo shots, and receive information on the result of the shot (hit/miss). Once all of the AI/Computer ships are destroyed then the player wins the game or if the Computer destroys all of your ships they would win. The AI/Computer board is autocreated and their torpedo shots are fired at a random location on your playerboard. Hits/Misses for both your targetboard and the playerboard is displayed to the end-user to keep a log of the game progress. The game needs to prevent invalid input but also permit auto placing & manual placements when setting up the game.
 
@@ -29,7 +27,7 @@ After analysing the assignment document I chose to focus on the PASS requirement
 
 ---
 
-#####  Set-Up Interface
+##### Set-Up Interface
 
 A usable, intuitive and highly efficient Set-Up interface in which a player can with minimal effort:
 Select from a game menu to a start a:
@@ -70,17 +68,23 @@ Auto-place all ships.
 
 Support a ‘quit’ game and ‘reset’ shipboard option.
 
-![5](https://user-images.githubusercontent.com/56550489/112161427-0bfe8a00-8be3-11eb-88e9-e38f47babd09.png)
+![18](https://user-images.githubusercontent.com/56550489/112289742-79172b80-8c86-11eb-9832-08b1a5192e41.png)
 
 ---
 
-##### Continue Option and AI Board Generation
+##### Continue Option 
 
 Support a ‘continue’ option if all ships have been placed and the user has confirmed they are happy with the current placements.
 
+![16](https://user-images.githubusercontent.com/56550489/112289011-cfd03580-8c85-11eb-98a2-9f91722faa58.png)
+
+---
+
+##### Computer Auto-Complete Set-Up
+
 A computer-based opponent than can automatically complete a valid setup process using a random strategy (i.e., place all their ships at valid but constantly differing positions on their own shipboard); essentially this should utilise the auto-place feature outlined above.
 
-![6](https://user-images.githubusercontent.com/56550489/112161672-45cf9080-8be3-11eb-94c2-cffc9877e0d5.png)
+![17](https://user-images.githubusercontent.com/56550489/112289533-4c631400-8c86-11eb-94d9-aaeffcc65d77.png)
 
 ---
 
@@ -117,7 +121,7 @@ Players are clearly notified of a ‘hit’ or ‘miss’ (or win) based on the 
 
 Players are able to quit the game (if not already won).
 
-![12](https://user-images.githubusercontent.com/56550489/112164238-a069ec00-8be5-11eb-939e-5f2585b62dbc.png)
+![18](https://user-images.githubusercontent.com/56550489/112289742-79172b80-8c86-11eb-9832-08b1a5192e41.png)
 
 ---
 
@@ -135,15 +139,15 @@ It uses its own up to date ‘targetboard’ to randomly ‘fire’ a torpedo at
 
 A user based ‘press a key’ interaction is required to end the computer’s turn.
 
-![7](https://user-images.githubusercontent.com/56550489/112162885-62b89380-8be4-11eb-977b-767cfb956f70.png)
+![19](https://user-images.githubusercontent.com/56550489/112290309-02c6f900-8c87-11eb-8a2f-d50cdce2be68.png)
 
 ---
 
 ### 1b. UML style diagram illustrating initial overall solution (linked to 1a)
 
-This is the Class Diagram for my AdaShip program illustrating all of the different classes present within the header files, with a main file (containing menu) to determine whether to initiate the function within my OnePlayerVComputer.cpp file which acts as a controller retrieving the relevant attributes and methods from the game files. 
+This is the Class Diagram for my AdaShip program illustrating all of the different classes present within the header files, with a main file (containing menu) - determines whether to initiate the function within my OnePlayerVComputer.cpp file which acts as a controller retrieving the relevant attributes and methods from the game files. 
 
-In theory, I designed the program to start with the INIReader file to retrieve the boat data from the INI config file. There is a one-to-one relationship between AdaShipGrid and INIReader, followed by another one-to-one relationship between AdaShip and AdaShipGrid.
+In theory, I designed the program to start with the INIReader file to retrieve the boat data from the INI config file. There is a one-to-one relationship between AdaShipGrid and INIReader, followed by another one-to-one relationship between AdaShip and AdaShipGrid. There is one to many relationships between OnePlayerVComputer and AdaShip as a player has many AdaShips. 
 
 The boat data is then meant to be parsed into the AdaShip file to hold within its class to then place the instructed ship coordinates into the grid, however it is not extensively used as most of the work is processed within the controller. 
 
@@ -151,8 +155,7 @@ AdaShipGrid attributes and methods are frequently used within the OnePlayerVComp
 
 The Colours header file is absent from the diagram as it does not contain a class however it is imported and used within some of the cpp files to improve the user interface.
 
-
-![Untitled Diagram-Page-1](https://user-images.githubusercontent.com/56550489/112168012-d9579000-8be8-11eb-87cf-544b72c54dda.png)
+![UML Diagram](https://user-images.githubusercontent.com/56550489/112293021-91d51080-8c89-11eb-81da-82dc7ccd4b4d.png)
 
 ---
 
@@ -168,7 +171,7 @@ A technique I utilised religiously was to pick a single epic to write code for, 
 
 ##### Development Strategy 
 
-My development strategy consisted of an object-orientated approach this would mean seperating the logic into a class to contain data associated to its intended mechanism and functionality. I kept the code in seperate files to ensure good coding standards and readability for example AdaShipGrid.h and AdaShip.h. 
+My development strategy consisted of an object-orientated approach this would mean separating the logic into a class to contain data associated to its intended mechanism and functionality. I kept the code in separate files to ensure good coding standards and readability for example AdaShipGrid.h and AdaShip.h. 
 
 To ensure that I fully understood the project and its planned user journey I designed the following Player V Computer Flow Diagram. This allowed me to visualise how I could decompose the program into various sub-parts and understand how a single user decision would affect their journey. I found this useful as there are various conditions and loops within my program for validation purposes and because the player is free to dictate how they want to continue with the program (e.g. quit program). 
 
@@ -196,7 +199,7 @@ When the application is runs the game menu is generated for the end user, if the
 
 OnePlayerVComputer
 
-The OnePlayerVComputer file controls the flow of the game and ultimately determins whether the Player or the AI has won the game. It retrieves most of its methods from the AdaShipGrid Class and also contains some of its own generated objects for instance the ones used to hold the battleships data that is then parsed into the adaship file to place it into the grid. 
+The OnePlayerVComputer file controls the flow of the game and ultimately determines  whether the Player or the AI has won the game. It retrieves most of its methods from the AdaShipGrid Class and also contains some of its own generated objects for instance the ones used to hold the battleships data that is then parsed into the adaship file to place it into the grid. 
 
 AdaShipGrid
 
@@ -236,6 +239,6 @@ The following tables represent my project plan calendar, consisting of 3 weeks w
 
 ### 2a. Reflective review, opportunities to improve and continued professional development.
 
-Overall, I am satisfied with the final outcome of my assignment as I aimed to complete all of the PASS requirements displayed within the project requirement brief. I managed to fulfill most of the listed requirements however I failed to complete one of the initial requirements which was to provide a run-time file that the data is read from. This assignment was a challenge for me as I was never sure of what best practices and design patterns were suited for this type of assignment. Ultimately, if I was to complete this project again or a similar assignment I would aim to rectify the problems I found with the vector template class and find better practices to use within object-orientated programming.
+Overall, I am satisfied with the final outcome of my assignment as I aimed to complete all of the PASS requirements displayed within the project requirement brief. I managed to fulfil most of the listed requirements however I failed to complete one of the initial requirements which was to provide a run-time file that the data is read from. This assignment was a challenge for me as I was never sure of what best practices and design patterns were suited for this type of assignment. Ultimately, if I was to complete this project again or a similar assignment I would aim to rectify the problems I found with the vector template class and aim to have a bit more practice with object-orientated programming.
 
 ---
